@@ -1,6 +1,7 @@
 package com.example.try_gpt4_1.feature.customer.controller;
 
 import com.example.try_gpt4_1.common.dto.ApiResponse;
+import com.example.try_gpt4_1.common.dto.PageResponse;
 import com.example.try_gpt4_1.feature.customer.dto.CustomerRequest;
 import com.example.try_gpt4_1.feature.customer.dto.CustomerResponse;
 import com.example.try_gpt4_1.feature.customer.service.CustomerService;
@@ -29,21 +30,46 @@ public class CustomerController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ApiResponse<List<CustomerResponse>> getAllCustomers(
+    public ApiResponse<?> getAllCustomers(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) String industry) {
+            @RequestParam(required = false) String industry,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
 
-        List<CustomerResponse> customers;
+        // ページングパラメータが指定されている場合
+        if (page != null && size != null) {
+            // 0ベースに調整（UIは1ベース、内部処理は0ベース）
+            int adjustedPage = page - 1;
+            if (adjustedPage < 0)
+                adjustedPage = 0;
 
-        if (name != null && !name.isEmpty()) {
-            customers = customerService.findByName(name);
-        } else if (industry != null && !industry.isEmpty()) {
-            customers = customerService.findByIndustry(industry);
-        } else {
-            customers = customerService.findAll();
+            PageResponse<CustomerResponse> pagedCustomers;
+
+            if (name != null && !name.isEmpty()) {
+                pagedCustomers = customerService.findByNameWithPaging(name, adjustedPage, size);
+                return ApiResponse.success("顧客情報を取得しました（ページング）", pagedCustomers);
+            } else if (industry != null && !industry.isEmpty()) {
+                pagedCustomers = customerService.findByIndustryWithPaging(industry, adjustedPage, size);
+                return ApiResponse.success("顧客情報を取得しました（ページング）", pagedCustomers);
+            } else {
+                pagedCustomers = customerService.findAllWithPaging(adjustedPage, size);
+                return ApiResponse.success("顧客情報を取得しました（ページング）", pagedCustomers);
+            }
         }
+        // 従来の処理（ページングなし）
+        else {
+            List<CustomerResponse> customers;
 
-        return ApiResponse.success("顧客情報を取得しました", customers);
+            if (name != null && !name.isEmpty()) {
+                customers = customerService.findByName(name);
+            } else if (industry != null && !industry.isEmpty()) {
+                customers = customerService.findByIndustry(industry);
+            } else {
+                customers = customerService.findAll();
+            }
+
+            return ApiResponse.success("顧客情報を取得しました", customers);
+        }
     }
 
     @GetMapping("/{id}")

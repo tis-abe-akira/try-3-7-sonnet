@@ -26,6 +26,20 @@
         FROM customer
         WHERE is_deleted = FALSE
     </select>
+    
+    <select id="findAllWithPaging" resultMap="customerResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE is_deleted = FALSE
+        ORDER BY id
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*)
+        FROM customer
+        WHERE is_deleted = FALSE
+    </select>
 
     <select id="findById" resultMap="customerResultMap">
         SELECT <include refid="selectColumns"/>
@@ -38,9 +52,37 @@
         FROM customer
         WHERE name LIKE CONCAT('%', #{name}, '%') AND is_deleted = FALSE
     </select>
+    
+    <select id="findByNameWithPaging" resultMap="customerResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE name LIKE CONCAT('%', #{name}, '%') AND is_deleted = FALSE
+        ORDER BY id
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+    <select id="countByName" resultType="long">
+        SELECT COUNT(*)
+        FROM customer
+        WHERE name LIKE CONCAT('%', #{name}, '%') AND is_deleted = FALSE
+    </select>
 
     <select id="findByIndustry" resultMap="customerResultMap">
         SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE industry = #{industry} AND is_deleted = FALSE
+    </select>
+    
+    <select id="findByIndustryWithPaging" resultMap="customerResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE industry = #{industry} AND is_deleted = FALSE
+        ORDER BY id
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+    
+    <select id="countByIndustry" resultType="long">
+        SELECT COUNT(*)
         FROM customer
         WHERE industry = #{industry} AND is_deleted = FALSE
     </select>

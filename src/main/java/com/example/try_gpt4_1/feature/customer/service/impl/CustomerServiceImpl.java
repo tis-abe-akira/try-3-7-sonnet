@@ -1,7 +1,9 @@
 package com.example.try_gpt4_1.feature.customer.service.impl;
 
+import com.example.try_gpt4_1.common.dto.PageResponse;
 import com.example.try_gpt4_1.common.exception.ResourceNotFoundException;
 import com.example.try_gpt4_1.common.service.impl.DateTimeService;
+import com.example.try_gpt4_1.common.util.PaginationUtil;
 import com.example.try_gpt4_1.feature.customer.dto.CustomerRequest;
 import com.example.try_gpt4_1.feature.customer.dto.CustomerResponse;
 import com.example.try_gpt4_1.feature.customer.entity.Customer;
@@ -31,6 +33,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(readOnly = true)
+    public PageResponse<CustomerResponse> findAllWithPaging(int page, int size) {
+        // ページは0から始まるが、UIでは1から始まるので調整
+        int offset = page * size;
+
+        List<CustomerResponse> content = customerRepository.findAllWithPaging(offset, size).stream()
+                .map(CustomerResponse::fromEntity)
+                .collect(Collectors.toList());
+
+        long totalElements = customerRepository.countAll();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        return PaginationUtil.createPageResponse(content, page, size, totalElements, totalPages);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public CustomerResponse findById(Long id) {
         return customerRepository.findById(id)
                 .map(CustomerResponse::fromEntity)
@@ -47,10 +65,40 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(readOnly = true)
+    public PageResponse<CustomerResponse> findByNameWithPaging(String name, int page, int size) {
+        int offset = page * size;
+
+        List<CustomerResponse> content = customerRepository.findByNameWithPaging(name, offset, size).stream()
+                .map(CustomerResponse::fromEntity)
+                .collect(Collectors.toList());
+
+        long totalElements = customerRepository.countByName(name);
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        return PaginationUtil.createPageResponse(content, page, size, totalElements, totalPages);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<CustomerResponse> findByIndustry(String industry) {
         return customerRepository.findByIndustry(industry).stream()
                 .map(CustomerResponse::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponse<CustomerResponse> findByIndustryWithPaging(String industry, int page, int size) {
+        int offset = page * size;
+
+        List<CustomerResponse> content = customerRepository.findByIndustryWithPaging(industry, offset, size).stream()
+                .map(CustomerResponse::fromEntity)
+                .collect(Collectors.toList());
+
+        long totalElements = customerRepository.countByIndustry(industry);
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        return PaginationUtil.createPageResponse(content, page, size, totalElements, totalPages);
     }
 
     @Override
