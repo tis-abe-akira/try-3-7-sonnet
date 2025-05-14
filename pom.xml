@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>try-gpt4-1</artifactId>
+	<artifactId>try-3-7-sonnet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>try-gpt4-1</name>
+	<name>try-3-7-sonnet</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -109,6 +109,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.example.try_3_7_sonnet.Try37SonnetApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

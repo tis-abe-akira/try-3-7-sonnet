@@ -17,16 +17,32 @@
 
 ## 📁 ディレクトリ構成
 ```
-src/main/java/com/example/try_gpt4_1/
-├── common/
+src/main/java/com/example/try_3_7_sonnet/
+├── common/              # 共通コンポーネント
 │   ├── advisor/        # 例外ハンドリング
+│   ├── aop/           # アスペクト（ロギング）
+│   ├── config/        # 設定クラス
 │   ├── dto/           # データ転送オブジェクト
 │   ├── entity/        # ドメインエンティティ
+│   ├── exception/     # カスタム例外
+│   ├── handler/       # ハンドラー
 │   ├── repository/    # データアクセス
-│   └── service/       # ビジネスロジック
-└── feature/
+│   ├── service/       # ビジネスロジック
+│   ├── typehandler/   # MyBatis型ハンドラー
+│   └── util/          # ユーティリティ
+└── feature/           # 機能モジュール
     ├── customer/      # 顧客管理API
+    │   ├── controller/  # コントローラー
+    │   ├── dto/         # DTOクラス
+    │   ├── entity/      # エンティティ
+    │   ├── repository/  # リポジトリ
+    │   └── service/     # サービス
     └── project/       # プロジェクト管理API
+        ├── controller/  # コントローラー
+        ├── dto/         # DTOクラス
+        ├── entity/      # エンティティ
+        ├── repository/  # リポジトリ
+        └── service/     # サービス
 ```
 
 ## 📝 主なエンティティ
@@ -34,13 +50,15 @@ src/main/java/com/example/try_gpt4_1/
 - **Project**: Customer参照、担当部署・PM・PL・ランク（S/A/B/C/D）・開始日・終了日・区分（新規/保守/パッケージ）
 
 ## 🚀 REST API
-- `/api/customers` ... 顧客CRUD
+- `/api/customers` ... 顧客CRUD・ページング機能付き
 - `/api/projects` ... プロジェクトCRUD
 
 ## 💡 開発Tips
 - DBスキーマは `src/main/resources/schema.sql` で自動生成
 - MyBatisマッパーは `src/main/resources/mapper/` 配下
 - バリデーションは `jakarta.validation.constraints` を使ってるよ！
+- 列挙型はMyBatisの型ハンドラーでカスタム変換
+- ページングは `PageResponse` と `PaginationResponse` を活用
 - Swagger UIは `/swagger-ui.html` でアクセスできる（springdoc-openapi）
 
 ## 🏃‍♀️ 起動方法
