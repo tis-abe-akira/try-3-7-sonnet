@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.try_gpt4_1.feature.project.repository.ProjectRepository">    <resultMap id="projectResultMap" type="com.example.try_gpt4_1.feature.project.entity.Project">
+<mapper namespace="com.example.try_3_7_sonnet.feature.project.repository.ProjectRepository">    <resultMap id="projectResultMap" type="com.example.try_3_7_sonnet.feature.project.entity.Project">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="customerId" column="customer_id"/>
         <result property="departmentName" column="department_name"/>
         <result property="projectManagerName" column="project_manager_name"/>
         <result property="projectLeaderName" column="project_leader_name"/>
-        <result property="rank" column="rank" typeHandler="com.example.try_gpt4_1.common.typehandler.ProjectRankTypeHandler"/>
+        <result property="rank" column="rank" typeHandler="com.example.try_3_7_sonnet.common.typehandler.ProjectRankTypeHandler"/>
         <result property="startDate" column="start_date"/>
         <result property="endDate" column="end_date"/>
-        <result property="projectType" column="project_type" typeHandler="com.example.try_gpt4_1.common.typehandler.ProjectTypeTypeHandler"/>
+        <result property="projectType" column="project_type" typeHandler="com.example.try_3_7_sonnet.common.typehandler.ProjectTypeTypeHandler"/>
         <result property="description" column="description"/>
         <result property="createdBy" column="created_by"/>
         <result property="createdAt" column="created_at"/>
@@ -19,8 +19,8 @@
         <result property="isDeleted" column="is_deleted"/>
     </resultMap>
     
-    <resultMap id="projectWithCustomerResultMap" type="com.example.try_gpt4_1.feature.project.entity.Project" extends="projectResultMap">
-        <association property="customer" javaType="com.example.try_gpt4_1.feature.customer.entity.Customer">
+    <resultMap id="projectWithCustomerResultMap" type="com.example.try_3_7_sonnet.feature.project.entity.Project" extends="projectResultMap">
+        <association property="customer" javaType="com.example.try_3_7_sonnet.feature.customer.entity.Customer">
             <id property="id" column="customer_id"/>
             <result property="name" column="customer_name"/>
             <result property="phoneNumber" column="customer_phone_number"/>

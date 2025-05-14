@@ -34,15 +34,15 @@ CREATE TABLE project (
 );
 
 -- サンプルデータ投入
--- INSERT INTO customer (name, phone_number, email, industry, address, notes, created_at, updated_at, is_deleted)
--- VALUES 
--- ('株式会社テストカンパニー', '03-1234-5678', 'info@testcompany.co.jp', 'IT', '東京都渋谷区テスト1-2-3', 'テスト顧客データ', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
--- ('サンプル商事', '06-8765-4321', 'contact@sample.co.jp', '製造業', '大阪府大阪市中央区サンプル町4-5-6', 'サンプル顧客データ', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
--- ('デモ銀行', '045-123-4567', 'support@demobank.co.jp', '金融', '神奈川県横浜市港北区デモ7-8-9', 'デモ顧客データ', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE);
 
--- INSERT INTO project (name, customer_id, department_name, project_manager_name, project_leader_name, rank, start_date, end_date, project_type, description, created_at, updated_at, is_deleted)
--- VALUES 
--- ('基幹システム再構築', 1, 'IT部門', '山田太郎', '佐藤次郎', 'A', '2023-01-01', '2023-12-31', '新規開発', '老朽化した基幹システムの刷新', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
--- ('モバイルアプリ開発', 1, 'デジタル戦略部', '鈴木花子', '高橋一郎', 'B', '2023-03-15', '2023-09-30', '新規開発', '顧客向けモバイルアプリの開発', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
--- ('セキュリティ対策強化', 2, 'IT部門', '伊藤直樹', '中村洋子', 'S', '2023-02-01', '2023-05-31', '保守開発', 'セキュリティ脆弱性対応とインフラ強化', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
--- ('ERPパッケージ導入', 3, '経営企画部', '小林誠', '加藤美咲', 'A', '2023-04-01', '2024-03-31', 'パッケージ導入', '業務効率化のためのERP導入', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE);
+INSERT INTO customer (name, phone_number, email, industry, address, notes, created_at, updated_at, is_deleted)
+VALUES 
+('Test Company Ltd.', '03-1234-5678', 'info@testcompany.com', 'IT', '1-2-3 Test Street, Shibuya, Tokyo', 'Test customer data', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
+('Sample Trading Co.', '06-8765-4321', 'contact@sample.com', 'Manufacturing', '4-5-6 Sample Town, Chuo, Osaka', 'Sample customer data', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
+('Demo Bank', '045-123-4567', 'support@demobank.com', 'Finance', '7-8-9 Demo District, Kohoku, Yokohama', 'Demo customer data', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE);
+
+INSERT INTO project (name, customer_id, department_name, project_manager_name, project_leader_name, rank, start_date, end_date, project_type, description, created_at, updated_at, is_deleted)
+VALUES 
+('Core System Renewal', 1, 'IT Department', 'Taro Yamada', 'Jiro Sato', 'A', '2023-01-01', '2023-12-31', 'NEW_DEVELOPMENT', 'Renewal of aging core system', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
+('Mobile App Development', 1, 'Digital Strategy Department', 'Hanako Suzuki', 'Ichiro Takahashi', 'B', '2023-03-15', '2023-09-30', 'NEW_DEVELOPMENT', 'Development of a customer-facing mobile app', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE),
+('Security Enhancement', 2, 'IT Department', 'Naoki Ito', 'Yoko Nakamura', 'S', '2023-02-01', '2023-05-31', 'NEW_DEVELOPMENT', 'Addressing security vulnerabilities and strengthening infrastructure', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), FALSE);
