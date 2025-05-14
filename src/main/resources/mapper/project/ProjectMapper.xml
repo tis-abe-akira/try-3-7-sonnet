@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.try_gpt4_1.feature.project.repository.ProjectRepository">    <resultMap id="projectResultMap" type="com.example.try_gpt4_1.feature.project.entity.Project">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="departmentName" column="department_name"/>
+        <result property="projectManagerName" column="project_manager_name"/>
+        <result property="projectLeaderName" column="project_leader_name"/>
+        <result property="rank" column="rank" typeHandler="com.example.try_gpt4_1.common.typehandler.ProjectRankTypeHandler"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="projectType" column="project_type" typeHandler="com.example.try_gpt4_1.common.typehandler.ProjectTypeTypeHandler"/>
+        <result property="description" column="description"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+    
+    <resultMap id="projectWithCustomerResultMap" type="com.example.try_gpt4_1.feature.project.entity.Project" extends="projectResultMap">
+        <association property="customer" javaType="com.example.try_gpt4_1.feature.customer.entity.Customer">
+            <id property="id" column="customer_id"/>
+            <result property="name" column="customer_name"/>
+            <result property="phoneNumber" column="customer_phone_number"/>
+            <result property="email" column="customer_email"/>
+            <result property="industry" column="customer_industry"/>
+            <result property="address" column="customer_address"/>
+            <result property="notes" column="customer_notes"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectColumns">
+        id, name, customer_id, department_name, project_manager_name, project_leader_name, 
+        rank, start_date, end_date, project_type, description, created_by, created_at, 
+        updated_by, updated_at, is_deleted
+    </sql>
+    
+    <sql id="selectColumnsWithCustomer">
+        p.id, p.name, p.customer_id, p.department_name, p.project_manager_name, p.project_leader_name, 
+        p.rank, p.start_date, p.end_date, p.project_type, p.description, p.created_by, p.created_at, 
+        p.updated_by, p.updated_at, p.is_deleted,
+        c.name as customer_name, c.phone_number as customer_phone_number, c.email as customer_email, 
+        c.industry as customer_industry, c.address as customer_address, c.notes as customer_notes
+    </sql>
+
+    <select id="findAll" resultMap="projectResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM project
+        WHERE is_deleted = FALSE
+    </select>
+
+    <select id="findById" resultMap="projectResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM project
+        WHERE id = #{id} AND is_deleted = FALSE
+    </select>
+    
+    <select id="findByIdWithCustomer" resultMap="projectWithCustomerResultMap">
+        SELECT <include refid="selectColumnsWithCustomer"/>
+        FROM project p
+        JOIN customer c ON p.customer_id = c.id
+        WHERE p.id = #{id} AND p.is_deleted = FALSE AND c.is_deleted = FALSE
+    </select>
+
+    <select id="findByCustomerId" resultMap="projectResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM project
+        WHERE customer_id = #{customerId} AND is_deleted = FALSE
+    </select>
+
+    <select id="findByName" resultMap="projectResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM project
+        WHERE name LIKE CONCAT('%', #{name}, '%') AND is_deleted = FALSE
+    </select>
+
+    <select id="findByRank" resultMap="projectResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM project
+        WHERE rank = #{rank} AND is_deleted = FALSE
+    </select>
+
+    <select id="findByProjectType" resultMap="projectResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM project
+        WHERE project_type = #{projectType} AND is_deleted = FALSE
+    </select>
+
+    <select id="findByPeriod" resultMap="projectResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM project
+        WHERE 
+            ((start_date BETWEEN #{startDate} AND #{endDate}) OR 
+             (end_date BETWEEN #{startDate} AND #{endDate}) OR 
+             (start_date &lt;= #{startDate} AND (end_date IS NULL OR end_date >= #{endDate})))
+            AND is_deleted = FALSE
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO project (
+            name, customer_id, department_name, project_manager_name, project_leader_name,
+            rank, start_date, end_date, project_type, description, 
+            created_by, created_at, updated_by, updated_at, is_deleted
+        ) VALUES (
+            #{name}, #{customerId}, #{departmentName}, #{projectManagerName}, #{projectLeaderName},
+            #{rank}, #{startDate}, #{endDate}, #{projectType}, #{description},
+            #{createdBy}, #{createdAt}, #{updatedBy}, #{updatedAt}, #{isDeleted}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE project
+        SET name = #{name},
+            customer_id = #{customerId},
+            department_name = #{departmentName},
+            project_manager_name = #{projectManagerName},
+            project_leader_name = #{projectLeaderName},
+            rank = #{rank},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            project_type = #{projectType},
+            description = #{description},
+            updated_by = #{updatedBy},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE project
+        SET is_deleted = TRUE
+        WHERE id = #{id}
+    </update>
+</mapper>

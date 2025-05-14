@@ -1,0 +1,11 @@
+# application-local.yml
+logging:
+  level:
+    com.example.try_gpt4_1: DEBUG
+    org.mybatis: DEBUG
+    org.springdoc: WARN
+    springfox: WARN
+    org.springframework.data: WARN
+    org.springframework.web: INFO
+    org.springframework.boot.actuate: WARN
+    org.springframework.boot.web.embedded: WARN

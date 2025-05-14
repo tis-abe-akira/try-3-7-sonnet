@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.try_gpt4_1.feature.customer.repository.CustomerRepository">
+
+    <resultMap id="customerResultMap" type="com.example.try_gpt4_1.feature.customer.entity.Customer">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="email" column="email"/>
+        <result property="industry" column="industry"/>
+        <result property="address" column="address"/>
+        <result property="notes" column="notes"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <sql id="selectColumns">
+        id, name, phone_number, email, industry, address, notes, created_by, created_at, updated_by, updated_at, is_deleted
+    </sql>
+
+    <select id="findAll" resultMap="customerResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE is_deleted = FALSE
+    </select>
+
+    <select id="findById" resultMap="customerResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE id = #{id} AND is_deleted = FALSE
+    </select>
+
+    <select id="findByName" resultMap="customerResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE name LIKE CONCAT('%', #{name}, '%') AND is_deleted = FALSE
+    </select>
+
+    <select id="findByIndustry" resultMap="customerResultMap">
+        SELECT <include refid="selectColumns"/>
+        FROM customer
+        WHERE industry = #{industry} AND is_deleted = FALSE
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO customer (
+            name, phone_number, email, industry, address, notes, created_by, created_at, updated_by, updated_at, is_deleted
+        ) VALUES (
+            #{name}, #{phoneNumber}, #{email}, #{industry}, #{address}, #{notes}, #{createdBy}, #{createdAt}, #{updatedBy}, #{updatedAt}, #{isDeleted}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE customer
+        SET name = #{name},
+            phone_number = #{phoneNumber},
+            email = #{email},
+            industry = #{industry},
+            address = #{address},
+            notes = #{notes},
+            updated_by = #{updatedBy},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE customer
+        SET is_deleted = TRUE
+        WHERE id = #{id}
+    </update>
+</mapper>
