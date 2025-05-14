@@ -16,7 +16,7 @@ mybatis:
 
 logging:
   level:
-    com.example.try_gpt4_1: DEBUG
+    com.example.try_3_7_sonnet: DEBUG
     org.mybatis: DEBUG
     org.springdoc: WARN
     springfox: WARN
